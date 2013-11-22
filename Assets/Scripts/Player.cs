@@ -22,20 +22,20 @@ public class Player : MonoBehaviour
     public int score = 0;
     public float reducedTime = 0;
 
-	private short moveDirection = 1;
 
     bool inside = false;
     bool victory = false;   
     Vector3 initalPos, initRot;
+    Filter filter;
+
+
     
-	CharacterController charController;
 
     void Start()
     {
-		charController = gameObject.GetComponent<CharacterController>();
-
         initalPos = transform.position;
         initRot = transform.eulerAngles;
+        filter = GetComponentInChildren<Filter>();
 
         if(mode == MODE.ZEN)
         {
@@ -44,14 +44,16 @@ public class Player : MonoBehaviour
         }
     }
 
-	void FixedUpdate()
-	{
-		charController.Move(new Vector3(moveDirection, 0, 0) * Time.deltaTime * speed);
+	void Update () 
+    {
+        transform.Translate(Vector3.right * Time.deltaTime * speed);
 
-		if(inside && Input.GetKeyDown(KeyCode.Space))
-		{
-			Jump();
-		}
+        if(inside && Input.GetKeyDown(KeyCode.Space))
+        {
+            Jump();
+        }
+
+        //filter.enabled = !inside;
 	}
 
     void OnTriggerEnter(Collider other)
@@ -59,7 +61,7 @@ public class Player : MonoBehaviour
 
         if (other.CompareTag("wall"))
         {
-			moveDirection *= -1;
+            transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y + 180, 0);
         }
         else if(other.CompareTag("zone"))
         {
@@ -70,6 +72,7 @@ public class Player : MonoBehaviour
             //}
 
             inside = true;
+            filter.StartFilter();
         }
         else if (other.CompareTag("death"))
         {
@@ -80,15 +83,15 @@ public class Player : MonoBehaviour
             reducedTime = Time.timeSinceLevelLoad;
         }
     }
-	
+
     void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("zone"))
         {
             inside = false;
+            filter.StopFilter();
             victory = false;
         }
-
     }
 
    public void Jump()
@@ -105,6 +108,7 @@ public class Player : MonoBehaviour
         else
         {
             inside = false;
+            filter.StopFilter();
             transform.Translate(Vector3.up * jumpDistance, Space.World);
             score += 10000000;
         }
