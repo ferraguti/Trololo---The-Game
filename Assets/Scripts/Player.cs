@@ -22,14 +22,18 @@ public class Player : MonoBehaviour
     public int score = 0;
     public float reducedTime = 0;
 
+	private short moveDirection = 1;
 
     bool inside = false;
     bool victory = false;   
     Vector3 initalPos, initRot;
     
+	CharacterController charController;
 
     void Start()
     {
+		charController = gameObject.GetComponent<CharacterController>();
+
         initalPos = transform.position;
         initRot = transform.eulerAngles;
 
@@ -40,14 +44,14 @@ public class Player : MonoBehaviour
         }
     }
 
-	void Update () 
-    {
-        transform.Translate(Vector3.right * Time.deltaTime * speed);
+	void FixedUpdate()
+	{
+		charController.Move(new Vector3(moveDirection, 0, 0) * Time.deltaTime * speed);
 
-        if(inside && Input.GetKeyDown(KeyCode.Space))
-        {
-            Jump();
-        }
+		if(inside && Input.GetKeyDown(KeyCode.Space))
+		{
+			Jump();
+		}
 	}
 
     void OnTriggerEnter(Collider other)
@@ -55,7 +59,7 @@ public class Player : MonoBehaviour
 
         if (other.CompareTag("wall"))
         {
-            transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y + 180, 0);
+			moveDirection *= -1;
         }
         else if(other.CompareTag("zone"))
         {
@@ -76,7 +80,7 @@ public class Player : MonoBehaviour
             reducedTime = Time.timeSinceLevelLoad;
         }
     }
-
+	
     void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("zone"))
@@ -84,7 +88,6 @@ public class Player : MonoBehaviour
             inside = false;
             victory = false;
         }
-
 
     }
 
