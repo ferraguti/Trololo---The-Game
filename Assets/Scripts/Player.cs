@@ -94,16 +94,20 @@ public class Player : MonoBehaviour
 		}
 	}
 
+	void OnTriggerStay(Collider other)
+	{
+		if (!other.CompareTag("wall"))
+		{
+			OnTriggerEnter (other);
+		}
+	}
+
     void OnTriggerEnter(Collider other)
 
     {
-
-
-
         if (other.CompareTag("wall"))
 
         {
-
 			moveDirection *= -1;
         }
 
