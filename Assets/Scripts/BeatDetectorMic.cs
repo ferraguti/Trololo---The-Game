@@ -170,11 +170,13 @@ public class BeatDetectorMic : MonoBehaviour
 			//Debug.Log("Variance " + energieVariance);
 			
 			//Si l'energie actuelle dépasse n fois la variance du buffer actuel, alors on a un beat
-			if(energieVariance > seuilEnergieVariance && energie > energieMoyenne + (energieVariance*sensibVarSign)) {
+			if(energieVariance > seuilEnergieVariance && energie > energieMoyenne + (energieVariance*sensibVarSign)) 
+            {
 				//Debug.Log(Time.frameCount);
 				//float[] args = new float[]{audio.volume, audio.pitch, audio.time};
+
+                player.CheckJump();
 				
-				BroadcastMessage("TickMic");
 				
 				if(objBeatDebug != null) {
 					objBeatDebug.transform.position = new Vector3(objBeatDebug.transform.position.x, 10, objBeatDebug.transform.position.z);
@@ -190,7 +192,5 @@ public class BeatDetectorMic : MonoBehaviour
 	}
 	
 	void Tick(){
-        player.Jump();
-		//audio.Play();
 	}
 }

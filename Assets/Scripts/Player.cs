@@ -88,11 +88,17 @@ public class Player : MonoBehaviour
 	{
 		charController.Move(new Vector3(moveDirection, 0, 0) * Time.deltaTime * speed);
 
-		if(inside && Input.GetKeyDown(KeyCode.Space))
-		{
-			Jump();
-		}
+        if (Input.GetKeyDown(KeyCode.Space))
+            CheckJump();
 	}
+
+    public void CheckJump()
+    {
+        if (inside)
+        {
+            Jump();
+        }
+    }
 
 	void OnTriggerStay(Collider other)
 	{
