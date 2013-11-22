@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     public float jumpDistance = 7;
     public MODE mode;
     public INPUT input;
+    public bool twoPlayer = false;
     public int score = 0;
     public float reducedTime = 0;
 
@@ -51,7 +52,6 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
 
         if (other.CompareTag("wall"))
         {
@@ -59,11 +59,11 @@ public class Player : MonoBehaviour
         }
         else if(other.CompareTag("zone"))
         {
-            //temp
-            if(other.gameObject.name == "zone")
-            {
-                victory = true;
-            }
+            ////temp
+            //if(other.gameObject.name == "zone")
+            //{
+            //    victory = true;
+            //}
 
             inside = true;
         }
