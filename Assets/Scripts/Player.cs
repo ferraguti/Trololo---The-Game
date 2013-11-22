@@ -1,20 +1,43 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum MODE
+{
+    NORMAL, ZEN
+}
+
+public enum INPUT
+{
+    KEYBOARD, MIKE
+}
+
+
 public class Player : MonoBehaviour 
 {
     public float speed = .1f;
     public float jumpDistance = 7;
+    public MODE mode;
+    public INPUT input;
+    public bool twoPlayer = false;
+    public int score = 0;
+    public float reducedTime = 0;
 
 
     bool inside = false;
     bool victory = false;   
     Vector3 initalPos, initRot;
+    
 
     void Start()
     {
         initalPos = transform.position;
         initRot = transform.eulerAngles;
+
+        if(mode == MODE.ZEN)
+        {
+            foreach (GameObject g in GameObject.FindGameObjectsWithTag("death"))
+                Destroy(g);
+        }
     }
 
 	void Update () 
@@ -29,7 +52,6 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
 
         if (other.CompareTag("wall"))
         {
@@ -37,11 +59,11 @@ public class Player : MonoBehaviour
         }
         else if(other.CompareTag("zone"))
         {
-            //temp
-            if(other.gameObject.name == "zone")
-            {
-                victory = true;
-            }
+            ////temp
+            //if(other.gameObject.name == "zone")
+            //{
+            //    victory = true;
+            //}
 
             inside = true;
         }
@@ -50,7 +72,8 @@ public class Player : MonoBehaviour
             Debug.Log("Death");
             transform.eulerAngles = initRot;
             transform.position = initalPos;
-
+            score = 0;
+            reducedTime = Time.timeSinceLevelLoad;
         }
     }
 
@@ -65,7 +88,7 @@ public class Player : MonoBehaviour
 
     }
 
-    void Jump()
+   public void Jump()
     {
         if(victory)
         {
@@ -80,6 +103,7 @@ public class Player : MonoBehaviour
         {
             inside = false;
             transform.Translate(Vector3.up * jumpDistance, Space.World);
+            score += 10000000;
         }
 
     }
