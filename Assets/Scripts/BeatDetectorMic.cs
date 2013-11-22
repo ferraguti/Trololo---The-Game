@@ -29,6 +29,8 @@ public class BeatDetectorMic : MonoBehaviour
 	private bool MicIsOk = false;
 
     Player player;
+
+    private bool canJump = true;
  
 	
 	IEnumerator InitMic(){
@@ -176,12 +178,17 @@ public class BeatDetectorMic : MonoBehaviour
 				//float[] args = new float[]{audio.volume, audio.pitch, audio.time};
 
                 player.CheckJump();
+                canJump = false;
 				
 				
 				if(objBeatDebug != null) {
 					objBeatDebug.transform.position = new Vector3(objBeatDebug.transform.position.x, 10, objBeatDebug.transform.position.z);
 				}
 			}
+            else
+            {
+                canJump = true;
+            }
 		}
 		
 		//Si on a un objet de debug du beat

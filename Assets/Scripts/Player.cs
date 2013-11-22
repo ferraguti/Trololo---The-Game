@@ -178,7 +178,7 @@ public class Player : MonoBehaviour
    public void Jump()
 
     {
-        if (Time.frameCount == iLoveSergey)
+        if (Time.frameCount <= (iLoveSergey + 15))
             return;
 
         iLoveSergey = Time.frameCount;
