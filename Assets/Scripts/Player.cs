@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
 
     Filter filter;
 
-
+    int iLoveSergey = 0;
 
 
 
@@ -172,6 +172,12 @@ public class Player : MonoBehaviour
    public void Jump()
 
     {
+        if (Time.frameCount == iLoveSergey)
+            return;
+
+        iLoveSergey = Time.frameCount;
+
+        Debug.Log(Time.frameCount);
 
         if(victory)
 
