@@ -26,12 +26,16 @@ public class Player : MonoBehaviour
     bool inside = false;
     bool victory = false;   
     Vector3 initalPos, initRot;
+    Filter filter;
+
+
     
 
     void Start()
     {
         initalPos = transform.position;
         initRot = transform.eulerAngles;
+        filter = GetComponentInChildren<Filter>();
 
         if(mode == MODE.ZEN)
         {
@@ -48,6 +52,8 @@ public class Player : MonoBehaviour
         {
             Jump();
         }
+
+        //filter.enabled = !inside;
 	}
 
     void OnTriggerEnter(Collider other)
@@ -66,6 +72,7 @@ public class Player : MonoBehaviour
             //}
 
             inside = true;
+            filter.StartFilter();
         }
         else if (other.CompareTag("death"))
         {
@@ -82,10 +89,9 @@ public class Player : MonoBehaviour
         if (other.CompareTag("zone"))
         {
             inside = false;
+            filter.StopFilter();
             victory = false;
         }
-
-
     }
 
    public void Jump()
@@ -102,6 +108,7 @@ public class Player : MonoBehaviour
         else
         {
             inside = false;
+            filter.StopFilter();
             transform.Translate(Vector3.up * jumpDistance, Space.World);
             score += 10000000;
         }
